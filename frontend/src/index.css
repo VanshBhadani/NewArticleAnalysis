@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    background-color: #FBFBF9;
+    color: #111827;
+    font-family: 'Plus Jakarta Sans', Inter, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, .editorial-heading {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: #111827;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   GLASSMORPHISM DESIGN TOKENS
+   ========================================================================== */
+
+/* Subtle glass surface for secondary panels and breadcrumbs */
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: 0 2px 8px 0 rgba(17, 24, 39, 0.03);
+}
+
+/* Floating glass for command palettes, drawers, and focused telemetry */
+.glass-floating {
+  background: rgba(251, 251, 249, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  box-shadow: 0 16px 36px -8px rgba(17, 24, 39, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+}
+
+/* Glass backdrop overlay for modals and drawers */
+.glass-overlay {
+  background: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ==========================================================================
+   NEO-BRUTALIST ACCENTS (Purposeful High Contrast)
+   ========================================================================== */
+
+/* Primary action buttons */
+.brutal-btn {
+  border: 1.5px solid #111827;
+  box-shadow: 2.5px 2.5px 0px 0px #111827;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.brutal-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3.5px 3.5px 0px 0px #111827;
+}
+.brutal-btn:active:not(:disabled) {
+  transform: translate(1.5px, 1.5px);
+  box-shadow: 1px 1px 0px 0px #111827;
+}
+
+/* High-priority callout card */
+.brutal-card {
+  border: 1.5px solid #111827;
+  box-shadow: 3px 3px 0px 0px #111827;
+  background-color: #FFFFFF;
+}
+
+/* Distinctive status chip */
+.brutal-badge {
+  border: 1px solid #111827;
+  box-shadow: 1px 1px 0px 0px #111827;
+}
+
+/* ==========================================================================
+   EDITORIAL TYPOGRAPHY UTILITIES
+   ========================================================================== */
+.editorial-lead {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #111827;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F4F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}

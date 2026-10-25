@@ -1,0 +1,82 @@
+{
+  "model_version": "v1.0.0-spark-lr",
+  "algorithm": "Multinomial Logistic Regression (L2 Regularized)",
+  "feature_extractor": "RegexTokenizer -> StopWordsRemover -> HashingTF(4000) -> IDF",
+  "training_timestamp": "2026-10-25T10:16:23.996438Z",
+  "train_record_count": 1200,
+  "test_record_count": 300,
+  "training_duration_seconds": 11.71,
+  "total_pipeline_seconds": 16.96,
+  "hyperparameters": {
+    "num_features": 4000,
+    "reg_param": 0.08,
+    "max_iter": 30,
+    "elastic_net": 0.0
+  },
+  "metrics": {
+    "accuracy": 0.64,
+    "weighted_precision": 0.7025,
+    "weighted_recall": 0.64,
+    "f1_score": 0.6385,
+    "per_class": {
+      "World": {
+        "class_id": 0,
+        "precision": 0.7313,
+        "recall": 0.6533,
+        "f1": 0.6901
+      },
+      "Sports": {
+        "class_id": 1,
+        "precision": 0.9111,
+        "recall": 0.4767,
+        "f1": 0.626
+      },
+      "Business": {
+        "class_id": 2,
+        "precision": 0.6279,
+        "recall": 0.5294,
+        "f1": 0.5745
+      },
+      "Sci/Tech": {
+        "class_id": 3,
+        "precision": 0.5172,
+        "recall": 0.8523,
+        "f1": 0.6438
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "World",
+        "Sports",
+        "Business",
+        "Sci/Tech"
+      ],
+      "matrix": [
+        [
+          49,
+          2,
+          6,
+          18
+        ],
+        [
+          11,
+          41,
+          5,
+          29
+        ],
+        [
+          1,
+          0,
+          27,
+          23
+        ],
+        [
+          6,
+          2,
+          5,
+          75
+        ]
+      ]
+    }
+  }
+}
