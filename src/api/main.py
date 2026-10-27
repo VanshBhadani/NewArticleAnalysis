@@ -24,7 +24,10 @@ from src.api.routes import (
     jobs,
     analytics,
     model,
-    infrastructure
+    infrastructure,
+    categories,
+    galaxy,
+    editorial
 )
 
 
@@ -63,6 +66,9 @@ app.include_router(jobs.router, prefix=API_PREFIX)
 app.include_router(analytics.router, prefix=API_PREFIX)
 app.include_router(model.router, prefix=API_PREFIX)
 app.include_router(infrastructure.router, prefix=API_PREFIX)
+app.include_router(categories.router, prefix=API_PREFIX)
+app.include_router(galaxy.router, prefix=API_PREFIX)
+app.include_router(editorial.router, prefix=API_PREFIX)
 
 # Serve built frontend static files if distribution exists
 FRONTEND_DIST = settings.base_dir / "frontend" / "dist"

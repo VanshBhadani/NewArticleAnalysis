@@ -15,6 +15,7 @@ st.set_page_config(
 
 # 2. Import Page Renderers
 from src.pages.overview import render_overview_page
+from src.pages.daily_news_desk import render_daily_news_desk_page
 from src.pages.article_explorer import render_article_explorer_page
 from src.pages.classify import render_classify_page
 from src.pages.batch_processing import render_batch_processing_page

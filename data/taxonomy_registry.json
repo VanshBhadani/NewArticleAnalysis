@@ -1,0 +1,88 @@
+[
+  {
+    "id": "world",
+    "name": "World",
+    "parent_id": null,
+    "status": "active",
+    "color": "#1E3A8A",
+    "description": "International politics, diplomacy, global conflicts, and foreign affairs.",
+    "created_at": "2026-10-27T17:06:28.152743Z",
+    "taxonomy_version": "v1.0",
+    "article_count": 202,
+    "cohesion_score": null,
+    "keywords": []
+  },
+  {
+    "id": "sports",
+    "name": "Sports",
+    "parent_id": null,
+    "status": "active",
+    "color": "#047857",
+    "description": "Athletics, competitive tournaments, team leagues, and sporting events.",
+    "created_at": "2026-10-27T17:06:28.152743Z",
+    "taxonomy_version": "v1.0",
+    "article_count": 263,
+    "cohesion_score": null,
+    "keywords": []
+  },
+  {
+    "id": "business",
+    "name": "Business",
+    "parent_id": null,
+    "status": "active",
+    "color": "#B45309",
+    "description": "Markets, corporate finance, macroeconomic policy, industry developments.",
+    "created_at": "2026-10-27T17:06:28.152743Z",
+    "taxonomy_version": "v1.0",
+    "article_count": 320,
+    "cohesion_score": null,
+    "keywords": []
+  },
+  {
+    "id": "scitech",
+    "name": "Sci/Tech",
+    "parent_id": null,
+    "status": "active",
+    "color": "#4338CA",
+    "description": "Scientific research, computing hardware, AI, biotechnology, and cybersecurity.",
+    "created_at": "2026-10-27T17:06:28.152743Z",
+    "taxonomy_version": "v1.0",
+    "article_count": 3215,
+    "cohesion_score": null,
+    "keywords": []
+  },
+  {
+    "id": "integration_test_topic",
+    "name": "Integration Test Topic",
+    "parent_id": null,
+    "status": "archived",
+    "color": "#4338CA",
+    "description": "Candidate topic discovered via TF-IDF cohesion (integration, testing)",
+    "created_at": "2026-10-27T17:07:15.710527Z",
+    "taxonomy_version": "v1.1",
+    "article_count": 0,
+    "cohesion_score": 0.72,
+    "keywords": [
+      "integration",
+      "testing"
+    ]
+  },
+  {
+    "id": "geothermal_&_clean",
+    "name": "Geothermal & Clean",
+    "parent_id": null,
+    "status": "candidate",
+    "color": "#475569",
+    "description": "Emerging topic cluster detected with 3 stories and cohesion 0.41.",
+    "created_at": "2026-10-27T17:07:25.212162Z",
+    "taxonomy_version": "v1.1",
+    "article_count": 3,
+    "cohesion_score": 0.415,
+    "keywords": [
+      "Geothermal",
+      "Clean",
+      "Geothermal Borehole",
+      "Subsurface"
+    ]
+  }
+]

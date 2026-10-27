@@ -16,16 +16,18 @@ router = APIRouter(prefix="/analytics", tags=["Analytics"])
 @router.get("", response_model=AnalyticsResponse)
 def get_analytics():
     """Returns analytics across active batch predictions and model evaluation benchmarks."""
+    from src.taxonomy.registry import category_registry
     active_df = _get_active_dataframe()
     recent_jobs = job_repo.list_jobs(limit=15)
     model_meta = get_model_metadata()
 
-    cat_dist = {c: 0 for c in CATEGORY_MAP.values()}
+    # Dynamic registry-driven distribution
+    cat_dist = {c.name: 0 for c in category_registry.list_categories(status="active")}
     total_active = len(active_df) if active_df is not None else 0
 
     if active_df is not None and not active_df.empty and "predicted_category" in active_df.columns:
         for cat, count in active_df["predicted_category"].value_counts().items():
-            cat_dist[cat] = int(count)
+            cat_dist[str(cat)] = int(count)
 
     conf_bins_raw = compute_confidence_buckets(active_df) if active_df is not None else {"labels": [], "counts": []}
     conf_bins = ConfidenceBins(

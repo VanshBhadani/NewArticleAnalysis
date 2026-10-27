@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api/client';
-import { ArticleItem, ArticlesListResponse } from '../api/types';
+import { ArticleItem, ArticlesListResponse, CategoryMetadata } from '../api/types';
 import { CategoryBadge } from '../components/ui/CategoryBadge';
+import { ArticleDetailDrawer } from '../components/ui/ArticleDetailDrawer';
+import { PageId } from '../components/layout/Sidebar';
 import {
   Search,
   Download,
   ChevronLeft,
   ChevronRight,
   Eye,
-  X,
   AlertTriangle,
   RotateCcw,
   Sparkles,
   BookOpen,
+  Orbit,
 } from 'lucide-react';
 
-export const ArticleExplorerPage: React.FC = () => {
+interface Props {
+  onNavigate?: (page: PageId) => void;
+}
+
+export const ArticleExplorerPage: React.FC<Props> = ({ onNavigate }) => {
   const [data, setData] = useState<ArticlesListResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,13 +37,26 @@ export const ArticleExplorerPage: React.FC = () => {
   // Selected article for floating glass drawer
   const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(null);
 
-  const categories = [
+  // Dynamic Categories from Registry
+  const [availableCategories, setAvailableCategories] = useState<string[]>([
     'All Categories',
     'World',
     'Sports',
     'Business',
     'Sci/Tech',
-  ];
+  ]);
+
+  useEffect(() => {
+    api
+      .getCategories()
+      .then((cats) => {
+        if (cats && cats.length > 0) {
+          const names = ['All Categories', ...cats.map((c) => c.name)];
+          setAvailableCategories(Array.from(new Set(names)));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const fetchArticles = () => {
     setIsLoading(true);
@@ -100,14 +119,27 @@ export const ArticleExplorerPage: React.FC = () => {
           </p>
         </div>
 
-        <a
-          href={exportUrl}
-          download="newspulse_articles_export.csv"
-          className="brutal-btn inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-forest hover:bg-forest-dark shrink-0"
-        >
-          <Download className="w-3.5 h-3.5" />
-          Export Filtered CSV
-        </a>
+        <div className="flex items-center gap-3 shrink-0">
+          {onNavigate && (
+            <button
+              type="button"
+              onClick={() => onNavigate('galaxy')}
+              className="brutal-btn inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-ink bg-white border border-border-light hover:bg-[#F4F4F0]"
+            >
+              <Orbit className="w-3.5 h-3.5 text-forest" />
+              Launch News Galaxy
+            </button>
+          )}
+
+          <a
+            href={exportUrl}
+            download="newspulse_articles_export.csv"
+            className="brutal-btn inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-forest hover:bg-forest-dark"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Export Filtered CSV
+          </a>
+        </div>
       </div>
 
       {/* Filter Controls Bar */}
@@ -136,7 +168,7 @@ export const ArticleExplorerPage: React.FC = () => {
               }}
               className="text-xs bg-white border border-border-light rounded-sm px-3 py-2 text-ink focus:outline-none focus:border-forest"
             >
-              {categories.map((c) => (
+              {availableCategories.map((c) => (
                 <option key={c} value={c}>
                   {c}
                 </option>
@@ -317,112 +349,11 @@ export const ArticleExplorerPage: React.FC = () => {
         )}
       </div>
 
-      {/* Floating Glass Inspector Drawer */}
-      {selectedArticle && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-end glass-overlay animate-fadeIn"
-          onClick={() => setSelectedArticle(null)}
-        >
-          <div
-            className="w-full max-w-xl h-full glass-floating border-l border-border-light shadow-2xl p-6 overflow-y-auto space-y-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between pb-4 border-b border-border-light">
-              <div>
-                <div className="text-[10px] uppercase font-semibold text-ink-muted tracking-wider mb-1">
-                  Story Telemetry Dossier
-                </div>
-                <h2 className="font-serif text-xl font-normal text-ink leading-snug">
-                  {selectedArticle.title}
-                </h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedArticle(null)}
-                className="p-1.5 text-ink-muted hover:text-ink rounded transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {selectedArticle.description && (
-              <div>
-                <div className="text-xs uppercase font-semibold text-ink-muted tracking-wider mb-1.5">
-                  Lead Dispatch & Summary
-                </div>
-                <p className="text-xs text-ink-secondary bg-white p-3.5 rounded-sm border border-border-light leading-relaxed">
-                  {selectedArticle.description}
-                </p>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 bg-white rounded-sm border border-border-light">
-                <div className="text-[10px] uppercase font-semibold text-ink-muted tracking-wider">
-                  Assigned Category
-                </div>
-                <div className="mt-1">
-                  <CategoryBadge category={selectedArticle.predicted_category} size="md" />
-                </div>
-              </div>
-              <div className="p-3 bg-white rounded-sm border border-border-light">
-                <div className="text-[10px] uppercase font-semibold text-ink-muted tracking-wider">
-                  Model Confidence
-                </div>
-                <div className="text-xl font-serif font-medium text-ink tabular-nums mt-0.5">
-                  {(selectedArticle.confidence * 100).toFixed(1)}%
-                </div>
-              </div>
-            </div>
-
-            {/* Softmax Breakdown */}
-            <div>
-              <div className="text-xs uppercase font-semibold text-ink-muted tracking-wider mb-2">
-                Calculated Softmax Scores
-              </div>
-              <div className="space-y-2.5 bg-white p-4 rounded-sm border border-border-light">
-                {[
-                  { label: 'World', val: selectedArticle.prob_world },
-                  { label: 'Sports', val: selectedArticle.prob_sports },
-                  { label: 'Business', val: selectedArticle.prob_business },
-                  { label: 'Sci/Tech', val: selectedArticle.prob_scitech },
-                ].map((item) => {
-                  const pct = Math.round((item.val || 0) * 100);
-                  const isWinner = item.label === selectedArticle.predicted_category;
-                  return (
-                    <div key={item.label} className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span className={isWinner ? 'font-bold text-forest-dark' : 'text-ink-secondary'}>
-                          {item.label}
-                        </span>
-                        <span className="font-mono text-[11px] tabular-nums font-semibold">{pct}%</span>
-                      </div>
-                      <div className="w-full bg-[#EAEAE5] h-2 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-300 ${
-                            isWinner ? 'bg-forest' : 'bg-ink-muted/30'
-                          }`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-border-light flex justify-end">
-              <button
-                type="button"
-                onClick={() => setSelectedArticle(null)}
-                className="brutal-btn px-4 py-2 bg-ink text-white text-xs font-semibold tracking-wide uppercase hover:bg-ink-muted"
-              >
-                Close Dossier
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Shared Article Dossier Drawer */}
+      <ArticleDetailDrawer
+        article={selectedArticle}
+        onClose={() => setSelectedArticle(null)}
+      />
     </div>
   );
 };

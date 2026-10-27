@@ -12,6 +12,7 @@ import {
   Download,
   X,
   ArrowRight,
+  Orbit,
 } from 'lucide-react';
 import { api } from '../../api/client';
 
@@ -102,6 +103,17 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onNavigate })
       icon: <Search className="w-4 h-4 text-forest" />,
       action: () => {
         onNavigate('articles');
+        onClose();
+      },
+    },
+    {
+      id: 'nav-galaxy',
+      title: 'News Galaxy & Dynamic Taxonomy',
+      category: 'Navigation',
+      description: 'Pan-and-zoom interactive spatial news galaxy with tile and cluster views',
+      icon: <Orbit className="w-4 h-4 text-forest" />,
+      action: () => {
+        onNavigate('galaxy');
         onClose();
       },
     },

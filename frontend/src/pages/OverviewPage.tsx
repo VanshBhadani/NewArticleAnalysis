@@ -4,6 +4,7 @@ import { OverviewResponse } from '../api/types';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { CategoryBadge } from '../components/ui/CategoryBadge';
 import { PageId } from '../components/layout/Sidebar';
+import { getCategoryColor, hexToRgba } from '../utils/colors';
 import {
   ArrowRight,
   Layers,
@@ -16,6 +17,7 @@ import {
   TrendingUp,
   Percent,
   Compass,
+  Orbit,
 } from 'lucide-react';
 
 interface Props {
@@ -83,6 +85,14 @@ export const OverviewPage: React.FC<Props> = ({ onNavigate }) => {
 
         {/* Primary Neo-Brutalist Actions */}
         <div className="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={() => onNavigate('galaxy')}
+            className="brutal-btn inline-flex items-center gap-1.5 px-4 py-2 bg-white text-ink text-xs font-semibold tracking-wide uppercase hover:bg-[#F4F4F0] border border-border-light"
+          >
+            <Orbit className="w-3.5 h-3.5 text-forest" />
+            News Galaxy
+          </button>
           <button
             type="button"
             onClick={() => onNavigate('classify')}
@@ -188,17 +198,12 @@ export const OverviewPage: React.FC<Props> = ({ onNavigate }) => {
                     {categoryEntries.map(([cat, count]) => {
                       const pct = (count / totalCatArticles) * 100;
                       if (pct <= 0) return null;
-                      const colors: Record<string, string> = {
-                        World: 'bg-[#1E3A8A]',
-                        Sports: 'bg-[#047857]',
-                        Business: 'bg-[#B45309]',
-                        'Sci/Tech': 'bg-[#4338CA]',
-                      };
+                      const catColor = getCategoryColor(cat);
                       return (
                         <div
                           key={cat}
-                          style={{ width: `${pct}%` }}
-                          className={`${colors[cat] || 'bg-forest'} h-full transition-all duration-500`}
+                          style={{ width: `${pct}%`, backgroundColor: catColor }}
+                          className="h-full transition-all duration-500"
                           title={`${cat}: ${count} articles (${pct.toFixed(1)}%)`}
                         />
                       );
@@ -209,10 +214,17 @@ export const OverviewPage: React.FC<Props> = ({ onNavigate }) => {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
                     {categoryEntries.map(([cat, count]) => {
                       const pct = totalCatArticles > 0 ? (count / totalCatArticles) * 100 : 0;
+                      const catColor = getCategoryColor(cat);
                       return (
                         <div key={cat} className="flex items-center justify-between p-2 bg-[#F9F9F7] rounded-sm border border-border-light/60">
-                          <span className="font-medium text-ink">{cat}</span>
-                          <span className="font-mono text-[11px] tabular-nums text-ink-secondary">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <span
+                              className="w-2 h-2 rounded-full shrink-0"
+                              style={{ backgroundColor: catColor }}
+                            />
+                            <span className="font-medium text-ink truncate">{cat}</span>
+                          </div>
+                          <span className="font-mono text-[11px] tabular-nums text-ink-secondary shrink-0">
                             {count} ({pct.toFixed(0)}%)
                           </span>
                         </div>

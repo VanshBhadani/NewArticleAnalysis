@@ -1,0 +1,32 @@
+{
+  "job_id": "job-d116c2d5",
+  "dataset_name": "newspulse_batch_compatible.csv",
+  "submission_time": "2026-10-27T17:22:12.382419Z",
+  "start_time": "2026-10-27T17:22:12.399178Z",
+  "completion_time": "2026-10-27T17:22:51.256334Z",
+  "status": "succeeded",
+  "input_records": 4000,
+  "processed_records": 4000,
+  "rejected_records": 0,
+  "duration_seconds": 38.44,
+  "throughput": 104.1,
+  "storage": {
+    "storage_backend": "Local Storage (Development Mode)",
+    "location": "C:\\CODE\\Project\\bdaPBL\\data\\processed\\predictions_job-d116c2d5.csv",
+    "local_path": "C:\\CODE\\Project\\bdaPBL\\data\\processed\\predictions_job-d116c2d5.csv",
+    "bytes": 5153245
+  },
+  "stats": {
+    "record_count": 4000,
+    "processing_time_seconds": 38.44,
+    "throughput_articles_per_sec": 104.1,
+    "category_distribution": {
+      "World": 202,
+      "Sports": 263,
+      "Business": 320,
+      "Sci/Tech": 3215
+    },
+    "average_confidence": 0.837,
+    "model_version": "v1.0.0-spark-lr"
+  }
+}

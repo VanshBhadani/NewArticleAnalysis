@@ -3,7 +3,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppShell } from './components/layout/AppShell';
 import { PageId } from './components/layout/Sidebar';
 import { OverviewPage } from './pages/OverviewPage';
+import { DailyNewsDeskPage } from './pages/DailyNewsDeskPage';
 import { ArticleExplorerPage } from './pages/ArticleExplorerPage';
+import { NewsGalaxyPage } from './pages/NewsGalaxyPage';
 import { ClassifyPage } from './pages/ClassifyPage';
 import { BatchProcessingPage } from './pages/BatchProcessingPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
@@ -27,8 +29,12 @@ export const App: React.FC = () => {
     switch (activePage) {
       case 'overview':
         return <OverviewPage onNavigate={(page) => setActivePage(page)} />;
+      case 'newsdesk':
+        return <DailyNewsDeskPage onNavigate={(page) => setActivePage(page)} />;
       case 'articles':
-        return <ArticleExplorerPage />;
+        return <ArticleExplorerPage onNavigate={(page) => setActivePage(page)} />;
+      case 'galaxy':
+        return <NewsGalaxyPage />;
       case 'classify':
         return <ClassifyPage />;
       case 'batches':

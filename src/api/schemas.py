@@ -78,6 +78,8 @@ class ArticleItem(BaseModel):
     predicted_id: int
     confidence: float
     is_uncertain: bool
+    subcategory: Optional[str] = ""
+    class_scores: Optional[Dict[str, float]] = None
     prob_world: Optional[float] = 0.0
     prob_sports: Optional[float] = 0.0
     prob_business: Optional[float] = 0.0

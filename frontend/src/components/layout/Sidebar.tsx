@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Newspaper,
+  Sparkles,
   Search,
   Zap,
   Layers,
@@ -12,11 +13,14 @@ import {
   Compass,
   Cpu,
   ShieldAlert,
+  Orbit,
 } from 'lucide-react';
 
 export type PageId =
   | 'overview'
+  | 'newsdesk'
   | 'articles'
+  | 'galaxy'
   | 'classify'
   | 'batches'
   | 'analytics'
@@ -44,8 +48,10 @@ export const Sidebar: React.FC<Props> = ({
       group: 'Editorial Desk',
       items: [
         { id: 'overview' as PageId, label: 'Operations Cockpit', icon: Newspaper, tag: 'Live' },
+        { id: 'newsdesk' as PageId, label: 'Daily News Desk', icon: Sparkles, tag: 'Curate' },
         { id: 'classify' as PageId, label: 'Classify Wire Story', icon: Zap, tag: 'Realtime' },
         { id: 'articles' as PageId, label: 'Article Intelligence', icon: Search },
+        { id: 'galaxy' as PageId, label: 'News Galaxy', icon: Orbit, tag: 'Cosmic' },
       ],
     },
     {

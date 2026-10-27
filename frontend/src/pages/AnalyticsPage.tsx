@@ -4,6 +4,7 @@ import { AnalyticsResponse } from '../api/types';
 import { SectionHeader } from '../components/ui/SectionHeader';
 import { MetricCard } from '../components/ui/MetricCard';
 import { CategoryBadge } from '../components/ui/CategoryBadge';
+import { getCategoryColor } from '../utils/colors';
 import {
   BarChart3,
   TrendingUp,
@@ -121,8 +122,11 @@ export const AnalyticsPage: React.FC = () => {
                   </div>
                   <div className="w-full bg-[#F4F4F0] h-2.5 rounded-sm overflow-hidden border border-border-light">
                     <div
-                      className="h-full bg-forest transition-all duration-500 rounded-sm"
-                      style={{ width: `${pct}%` }}
+                      className="h-full transition-all duration-500 rounded-sm"
+                      style={{
+                        width: `${pct}%`,
+                        backgroundColor: getCategoryColor(cat),
+                      }}
                     />
                   </div>
                 </div>

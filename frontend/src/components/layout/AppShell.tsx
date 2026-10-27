@@ -18,7 +18,9 @@ interface Props {
 
 const pageTitles: Record<PageId, string> = {
   overview: 'Operations Cockpit & Telemetry',
+  newsdesk: 'Daily News Desk & Edition Lineup',
   articles: 'Article Intelligence & Library',
+  galaxy: 'News Galaxy & Dynamic Taxonomy',
   classify: 'Classify Wire Story',
   batches: 'Batch Ingestion & Processing',
   analytics: 'Editorial Analytics & Evaluation',

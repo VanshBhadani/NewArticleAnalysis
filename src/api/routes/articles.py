@@ -12,44 +12,27 @@ import pandas as pd
 
 from src.config import settings, CATEGORY_MAP
 from src.api.schemas import ArticlesListResponse, ArticleItem
-from src.data.ingestion import create_sample_batch_csv
-from src.data.validation import validate_and_preprocess_dataframe
-from src.jobs.manager import job_manager
+from src.data.dataset_service import dataset_service
 
 router = APIRouter(prefix="/articles", tags=["Articles"])
 
 
 def _get_active_dataframe() -> pd.DataFrame:
-    """Retrieves the latest predictions DataFrame or runs the bootstrap batch."""
-    processed_files = list(settings.processed_data_dir.glob("predictions_*.csv"))
-    if processed_files:
-        latest_file = max(processed_files, key=lambda f: f.stat().st_mtime)
-        try:
-            return pd.read_csv(latest_file)
-        except Exception:
-            pass
-
-    # If no file exists, auto-process the sample batch
-    sample_path = settings.data_dir / "sample_news_batch.csv"
-    if not sample_path.exists():
-        create_sample_batch_csv(sample_path)
-    
-    sample_raw = pd.read_csv(sample_path)
-    acc, rej, _ = validate_and_preprocess_dataframe(sample_raw)
-    _, enriched = job_manager.submit_batch_job(acc, "sample_news_batch.csv")
-    return enriched
+    """Retrieves the verified active predictions DataFrame via dataset_service."""
+    return dataset_service.get_active_dataframe()
 
 
 def _filter_dataframe(
     df: pd.DataFrame,
     search: Optional[str] = None,
     category: Optional[str] = None,
+    subcategory: Optional[str] = None,
     status: Optional[str] = None,
     min_confidence: float = 0.0,
     max_confidence: float = 1.0,
     sort_by: Optional[str] = "confidence_desc"
 ) -> pd.DataFrame:
-    """Applies search, category, confidence, and sorting filters."""
+    """Applies search, category, subcategory, confidence, and sorting filters."""
     filtered = df.copy()
 
     if search:
@@ -62,6 +45,9 @@ def _filter_dataframe(
 
     if category and category.lower() != "all" and category != "All Categories":
         filtered = filtered[filtered["predicted_category"].str.lower() == category.lower()]
+
+    if subcategory and subcategory.lower() != "all" and subcategory != "All Subcategories" and "subcategory" in filtered.columns:
+        filtered = filtered[filtered["subcategory"].str.lower() == subcategory.lower()]
 
     if status:
         if status.lower() == "decisive":
@@ -85,6 +71,7 @@ def _filter_dataframe(
 def list_articles(
     search: Optional[str] = Query(None),
     category: Optional[str] = Query(None),
+    subcategory: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
     min_confidence: float = Query(0.0, ge=0.0, le=1.0),
     max_confidence: float = Query(1.0, ge=0.0, le=1.0),
@@ -98,6 +85,7 @@ def list_articles(
         df=df,
         search=search,
         category=category,
+        subcategory=subcategory,
         status=status,
         min_confidence=min_confidence,
         max_confidence=max_confidence,
@@ -122,6 +110,7 @@ def list_articles(
             predicted_id=int(r.get("predicted_id", 0)),
             confidence=float(r.get("confidence", 0.0)),
             is_uncertain=bool(r.get("is_uncertain", False)),
+            subcategory=str(r.get("subcategory", "")),
             prob_world=float(r.get("prob_world", 0.0)),
             prob_sports=float(r.get("prob_sports", 0.0)),
             prob_business=float(r.get("prob_business", 0.0)),
@@ -141,6 +130,7 @@ def list_articles(
 def export_filtered_csv(
     search: Optional[str] = Query(None),
     category: Optional[str] = Query(None),
+    subcategory: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
     min_confidence: float = Query(0.0),
     max_confidence: float = Query(1.0),
@@ -152,6 +142,7 @@ def export_filtered_csv(
         df=df,
         search=search,
         category=category,
+        subcategory=subcategory,
         status=status,
         min_confidence=min_confidence,
         max_confidence=max_confidence,
